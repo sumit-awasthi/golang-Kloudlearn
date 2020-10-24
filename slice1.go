@@ -13,5 +13,5 @@ func main() {
 	fmt.Println("len:", len(s))
 	s = append(s, "d")
 	s = append(s, "e", "f")
-	fmt.Println("apd:", s)
+	fmt.Println("added new elements:", s)
 }
