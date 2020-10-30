@@ -39,7 +39,7 @@ func main() {
 	fmt.Println("Successfully inserted the data")
 
 	defer insert.Close()
-	update, err := db.Query("Update user_info SET name='Rohan', mobile ='123456742' where id = 2")
+	update, err := db.Query("Update user_info SET name='Rohan', mobile ='123456742' where id = 5")
 
 	if err != nil {
 		panic(err.Error())
@@ -47,7 +47,7 @@ func main() {
 
 	defer update.Close()
 
-	delete, err := db.Query("DELETE FROM user_info WHERE id = 3")
+	delete, err := db.Query("DELETE FROM user_info WHERE id = 4")
 
 	if err != nil {
 		panic(err.Error())
