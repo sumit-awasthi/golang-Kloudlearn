@@ -1,0 +1,71 @@
+                            Commands for PostgresSQL
+
+\l //list of database available
+
+//create and delete database
+create database School;
+
+// to change database or switch between database
+\c School;
+
+
+//delete database which is currently not used
+drop database School;
+
+// to create and delete table in database
+create table students(id integer not null primary key,fname text not null,lname text not null,age integer not null);
+
+/d //available table list
+
+//to delete table
+drop table students;
+
+// to create and delete schema 
+create schema newschema;
+drop schema newschema;
+
+// inserting values in table
+insert into students(id,fname,lname,age)values(1,'John','Mark',20),(2,'Smith','Marq',22),(3,'Tonny','Stark',25),(4,'Richard','Anderson',23);
+
+// to display content of table
+select* from students;
+
+
+// select keyword
+select * from public.students
+orderby id asc;
+
+select id,fname from students;
+
+// where clause
+select * from students where age=20;
+
+//updating/modifying a row in a table
+update students set lname='stone' where age=22;
+
+update students set fname='emma',lname='stone' where age=20;
+
+//delete /drop a row from table
+
+delete from students where id=2;
+
+//order by clause 
+select * from students order by age asc;
+select * from students order by fname desc;
+
+
+
+//create new table 'teachers'
+
+
+
+//group by clause
+select fname,sum(age) from students group by fname ;
+//having by clause
+select name from teachers group by name having count (name)>2;
+
+//operators 
+select * from students where lname='stone' and age>20;
+select * from students where lname='stone' or age>25;
+select * from students where fname='tonny' or fname='emma' and age>20;
+select * from students where lname is not null;
