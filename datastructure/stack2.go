@@ -56,3 +56,11 @@ func main() {
     }
     fmt.Printf("Size: %d\n", customQueue.Size())
 }
+
+/* this is a program that cover 
+Push
+Pop
+Front
+Size
+Empty
+List Imp /*
