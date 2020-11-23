@@ -10,8 +10,8 @@ type Node struct {
 }
 
 type List struct {
-	head *Node
-	tail *Node
+	head *Node //head points first element of the list
+	tail *Node // tail points the last elements of the list
 }
 
 func (L *List) Insert(key interface{}) {
@@ -48,15 +48,6 @@ func Display(list *Node) {
 	fmt.Println()
 }
 
-/*
-func ShowBackwards(list *Node) {
-	for list != nil {
-		fmt.Printf("%v <-", list.key)
-		list = list.prev
-	}
-	fmt.Println()
-}
-*/
 // methrd of displaying the elements in the reverse order
 func (l *List) Reverse() {
 	curr := l.head
@@ -73,7 +64,7 @@ func (l *List) Reverse() {
 	Display(l.head)
 }
 
-func main() {
+func main() { //elements stored in the linked list
 	link := List{}
 	link.Insert(5)
 	link.Insert(10)

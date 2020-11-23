@@ -63,6 +63,6 @@ func main() {
 	s.Push(&Node{2})
 	s.Push(&Node{3})
 	s.Push(&Node{4})
-	fmt.Println("Elements Pushed into the stack", s.nodes)                //list of the item in the stack
-	fmt.Printf("Elements Poped out: %v %v %v", s.Pop(), s.Pop(), s.Pop()) // poped out the elemnts one after the other
+	fmt.Println("Elements Pushed into the stack", s.nodes)                             //list of the item in the stack
+	fmt.Printf("Elements Poped out of the stack: %v %v %v", s.Pop(), s.Pop(), s.Pop()) // poped out the elemnts one after the other
 }

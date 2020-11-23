@@ -1,3 +1,5 @@
+//QUICKSORT
+
 package main
 
 import (
@@ -8,12 +10,8 @@ import (
 func quickSort(arr []int, low, high int) {
 	if low < high {
 
-		// Find the pivot index of an lower bound of an array
+		// Find the pivot
 		var pivot = partition(arr, low, high)
-
-		// Apply Divide and conquer stratagy
-		// to sort the left side and right side of an array
-		// respective to the pivot position
 
 		// Left hand side array
 		quickSort(arr, low, pivot)
