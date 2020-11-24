@@ -5,31 +5,22 @@ import (
 	"fmt"
 )
 
-var toBeSorted [10]int = [10]int{1, 3, 2, 4, 8, 6, 7, 2, 3, 0}
+var data []int = []int{1, 3, 2, 4, 8, 6, 7, 2, 3, 0}
 
-func bubbleSort(input [10]int) {
-
-	n := 10
-	swapped := true
-	for swapped {
-		swapped = false
-
-		for i := 1; i < n; i++ {
-			if input[i-1] > input[i] {
-				input[i], input[i-1] = input[i-1], input[i]
-				swapped = true
+func BubbleSort(data []int) {
+	for i := 0; i < len(data); i++ {
+		for j := 1; j < len(data)-i; j++ {
+			if data[j] < data[j-1] {
+				data[j], data[j-1] = data[j-1], data[j]
 			}
 		}
 	}
-	// finally, print out the sorted list
-	fmt.Println(input)
 }
-
 func main() {
-	fmt.Println("Before sort\n",toBeSorted)
+	fmt.Println("Before sort\n", data)
 	fmt.Println("***********************************")
-	fmt.Println("After sort \n")
-	bubbleSort(toBeSorted)
-	
-	
+	fmt.Printf("After sort\n")
+	BubbleSort(data)
+	fmt.Println(data)
+
 }
