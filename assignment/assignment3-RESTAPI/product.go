@@ -26,10 +26,12 @@ var err error
 
 func main() {
 	// DB Setup
-	db, err = sql.Open("mysql", "root:password123@(127.0.0.1:3306)/mysqlcrud?parseTime=true")
+	db, err = sql.Open("mysql", "root:root@(127.0.0.1:3306)/mysqlcurd?parseTime=true")
 	if err != nil {
 		panic(err.Error())
+		return
 	}
+	fmt.Println("Connection")
 	defer db.Close()
 
 	// Init Router, here we are using gorilla mux router
@@ -49,7 +51,6 @@ func main() {
 
 // createBook create a new book
 func createBook(w http.ResponseWriter, r *http.Request) {
-
 	statement, err := db.Prepare("INSERT INTO books(id,isbn,title,author)VALUES(?,?,?,?)")
 	if err != nil {
 		panic(err.Error())

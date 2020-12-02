@@ -1,12 +1,10 @@
 //pong ping using channels in golang
 package main
-
 import (
 	"fmt"
 	"os"
 	"time"
 )
-
 func pongerfunc(pingerfunc chan<- int, pongerfunc <-chan int) {
 	for {
 		val := <-pongerfunc
@@ -23,15 +21,12 @@ func pingerfunc(pingerfunc <-chan int, pongerfunc chan<- int) {
 		pongerfunc <- 1
 	}
 }
-
 func main() {
-
 	pong := make(chan int)
 	ping := make(chan int)
 	go pingerfunc(ping, pong)
 	go pongerfunc(ping, pong)
 	//goroutine starts the pong-ping by sending into the pong channel
-
 	pong <- 1
 	time.Sleep(5 * time.Second)
 	os.Exit(0)

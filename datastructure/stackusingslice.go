@@ -1,26 +1,21 @@
 //stack using slice
 package main
-
 import "fmt"
-
 //Stack represents a stack that hold a slice
 type Stack struct {
 	items []int
 }
-
 // Push will add a value at the end (top)
 func (s *Stack) Push(i int) {
 	s.items = append(s.items, i)
 }
-
 // Pop will remove the value at the end (top)
 func (s *Stack) Pop() int {
-	lastIndex := len(s.items) - 1
-	toRemove := s.items[lastIndex]
+	lastIndex := len(s.items) - 1   //n-1
+	toRemove := s.items[lastIndex] //top
 	s.items = s.items[:lastIndex]
 	return toRemove
 }
-
 func main() {
 	myStack := Stack{}
 	fmt.Println(myStack)
