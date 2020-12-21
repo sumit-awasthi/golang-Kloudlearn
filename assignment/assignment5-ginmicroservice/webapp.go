@@ -1,20 +1,25 @@
+//assignment 5
 package main
 
 import (
+	//"fmt"
 	"database/sql"
-
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-gorp/gorp"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/google/uuid"
 )
 
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	Age  int    `json:"age"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+	Gender   string `json:"gender"`
+	DOB      string `json:"dob"`
+	Address  string `json:"address"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
 }
 
 var err error
@@ -22,7 +27,7 @@ var err error
 var dbmap = initDb()
 
 func initDb() *gorp.DbMap {
-	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/user")
+	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/form")
 	checkErr(err, "sql.Open failed")
 	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
 	err = dbmap.CreateTablesIfNotExists()
@@ -40,18 +45,21 @@ func main() {
 
 	r := gin.Default()
 
-	userRoutes := r.Group("/users")
-	{
-		userRoutes.GET("/", GetUsers)
-		userRoutes.GET("/:id", GetUser)
-		userRoutes.POST("/", CreateUser)
-		userRoutes.PUT("/:id", EditUser)
-		userRoutes.DELETE("/:id", DeleteUser)
-	}
+	r.LoadHTMLGlob("template/*.html")
+	r.GET("/displayForm", displayForm)
+	r.GET("/display/", GetUsers)
+	r.GET("/displaysingle/:email", GetUser)
+	r.POST("/registration", CreateUser)
+	r.PUT("/edituser/:email", EditUser)
+	r.DELETE("/deleteuser/:email", DeleteUser)
+	r.Run(":5000")
+}
 
-	if err := r.Run(":5000"); err != nil {
-		log.Fatal(err.Error())
-	}
+func displayForm(c *gin.Context) {
+	//info := information{Name: "Sumit Awasthi", Age: 23}
+	c.HTML(http.StatusOK, "registration.html", gin.H{
+		"hl": "form", // info)
+	})
 }
 
 func GetUsers(c *gin.Context) {
@@ -68,9 +76,10 @@ func GetUsers(c *gin.Context) {
 }
 
 func GetUser(c *gin.Context) {
-	id := c.Param("id")
+	email := c.Param("email")
+	//fmt.Println(email)
 	var U []User
-	_, err := dbmap.Select(&U, "select * from users where id = ? LIMIT 1", id)
+	_, err := dbmap.Select(&U, "select * from users where email = ? LIMIT 1", email)
 
 	if err == nil {
 		c.JSON(200, U)
@@ -81,20 +90,17 @@ func GetUser(c *gin.Context) {
 }
 
 func CreateUser(c *gin.Context) {
-	var reqBody User
-	if err := c.ShouldBindJSON(&reqBody); err != nil {
-		c.JSON(422, gin.H{
-vis			"error":   true,
-			"message": "invalid request body",
-		})
-		return
 
-	}
-	statement, err := dbmap.Prepare("INSERT INTO users(id,name,age)VALUES(?,?,?)")
+	name := c.PostForm("name")
+	password := c.PostForm("password")
+	gender := c.PostForm("gender")
+	dob := c.PostForm("dob")
+	address := c.PostForm("address")
+	email := c.PostForm("email")
+	phone := c.PostForm("phone")
+	statement, err := dbmap.Prepare("INSERT INTO users VALUES(?,?,?,?,?,?,?)")
 
-	reqBody.ID = uuid.New().String()
-
-	_, err = statement.Exec(reqBody.ID, reqBody.Name, reqBody.Age)
+	_, err = statement.Exec(name, password, gender, dob, address, email, phone)
 	if err != nil {
 		c.JSON(422, gin.H{
 			"error":   true,
@@ -109,7 +115,7 @@ vis			"error":   true,
 }
 
 func EditUser(c *gin.Context) {
-	id := c.Param("id")
+	email := c.Param("email")
 	var Body User
 	if err := c.ShouldBindJSON(&Body); err != nil {
 		c.JSON(422, gin.H{
@@ -119,9 +125,9 @@ func EditUser(c *gin.Context) {
 		return
 
 	}
-	statement, err := dbmap.Prepare("Update users SET name = ?, age = ? where id = ?")
+	statement, err := dbmap.Prepare("Update users SET name = ?, password = ?, gender = ?, dob = ?, address = ?, phone = ? where email = ?")
 
-	_, err = statement.Exec(Body.Name, Body.Age, id)
+	_, err = statement.Exec(Body.Name, Body.Password, Body.Gender, Body.DOB, Body.Address, Body.Phone, email)
 	if err != nil {
 		c.JSON(422, gin.H{
 			"error":   true,
@@ -137,11 +143,11 @@ func EditUser(c *gin.Context) {
 }
 
 func DeleteUser(c *gin.Context) {
-	id := c.Param("id")
+	email := c.Param("email")
 
-	statement, err := dbmap.Prepare("DELETE FROM users WHERE id = ?")
+	statement, err := dbmap.Prepare("DELETE FROM users WHERE email = ?")
 
-	_, err = statement.Exec(id)
+	_, err = statement.Exec(email)
 	if err != nil {
 		c.JSON(422, gin.H{
 			"error":   true,

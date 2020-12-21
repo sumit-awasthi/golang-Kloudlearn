@@ -123,7 +123,7 @@ func getProducts(w http.ResponseWriter, r *http.Request) {
 // updateProduct update the product name based on id passed.
 func updateProduct(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	statement, err := db.Prepare("UPDATE products SET name = ? WHERE id = ?")
+	statement, err := db.Prepare("UPDATE product SET name = ? WHERE id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
@@ -150,7 +150,7 @@ func deleteProduct(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 
-	statement, err := db.Prepare("DELETE FROM products WHERE id = ?")
+	statement, err := db.Prepare("DELETE FROM product WHERE id = ?")
 	if err != nil {
 		panic(err.Error())
 	}
