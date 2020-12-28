@@ -1,4 +1,3 @@
-//without sql
 package main
 
 import (

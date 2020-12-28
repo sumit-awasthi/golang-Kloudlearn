@@ -46,16 +46,16 @@ func main() {
 	r := gin.Default()
 
 	r.LoadHTMLGlob("template/*.html")
-	r.GET("/displayForm", displayForm)
+	r.GET("/Form", Form)
 	r.GET("/display/", GetUsers)
 	r.GET("/displaysingle/:email", GetUser)
 	r.POST("/registration", CreateUser)
 	r.PUT("/edituser/:email", EditUser)
 	r.DELETE("/deleteuser/:email", DeleteUser)
-	r.Run(":5000")
+	r.Run(":8000")
 }
 
-func displayForm(c *gin.Context) {
+func Form(c *gin.Context) {
 	//info := information{Name: "Sumit Awasthi", Age: 23}
 	c.HTML(http.StatusOK, "registration.html", gin.H{
 		"hl": "form", // info)
